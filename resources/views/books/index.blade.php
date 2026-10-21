@@ -1,6 +1,11 @@
 @extends('layouts.app') 
 @section('title', 'Daftar Buku') 
 @section('content') 
+    @if (session('success')) 
+        <p>
+            {{ session('success') }}
+        </p>
+    @endif
 
     <a href="{{ route('books.create') }}">Tambah Buku</a>
     <h2>Daftar Buku</h2> 
