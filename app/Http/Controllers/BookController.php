@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Category;
 
 class BookController extends Controller
 {
@@ -12,7 +13,7 @@ class BookController extends Controller
      */
     public function index()
     {
-        $books = Book::all();
+        $books = Book::with('category')->get();
         return view('books.index', compact('books'));
     }
 
@@ -21,7 +22,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+        $categories = Category::orderBy('name')->get();
+        return view('books.create', compact('categories'));
     }
 
     /**
@@ -34,6 +36,7 @@ class BookController extends Controller
             'author' => 'required|string|min:3|max:255',
             'year' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
             'stock' => 'required|integer|min:0|max:1000',
+            'category_id' => 'required|exists:categories,id'
         ]);
         Book::create($validated);
         
@@ -58,8 +61,8 @@ class BookController extends Controller
     public function edit(Book $book)
     {
         $title = "Edit Buku";
-
-        return view('books.edit', compact('title', 'book'));
+        $categories = Category::orderBy('name')->get();
+        return view('books.edit', compact('title', 'book', 'categories'));
     }
 
     /**
@@ -72,6 +75,7 @@ class BookController extends Controller
             'author' => 'required|string|min:3|max:255',
             'year' => 'required|integer|digits:4|min:1900|max:' . date('Y'),
             'stock' => 'required|integer|min:0|max:1000',
+            'category_id' => 'required|exists:categories,id'
         ]);
         $book->update($validated);
 

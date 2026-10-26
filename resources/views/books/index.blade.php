@@ -13,7 +13,7 @@
     <ul> 
         @foreach($books as $book) 
         <li>
-            <h3>{{ $book->title }}</h3>
+            <h3>{{ $book->title }} <small>({{ $book->category?->name ?? 'Belum ada kategori' }})</small></h3>
             <a href="{{ route('books.show', $book) }}">Lihat Detail</a>
             <a href="{{ route('books.edit', $book) }}">Edit</a>
             <form action="{{ route('books.destroy', $book) }}" method="POST" style="display:inline;">
